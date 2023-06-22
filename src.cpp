@@ -115,5 +115,41 @@ int main() {
 	}
 	fclose(f);
 	
+	scanf("%d", &n);
+	sprintf(s, "%d.out", n);
+	freopen(s, "w", stdout);
+	for (int i = 0; i < M; i ++) dfs(bitll(i), 1);
+	fprintf(stderr, "the total number of subgroup: %d\n", cnt);
+//	printf("the total number of subgroup: %d\n", cnt);
+
+	fprintf(stderr, "the maximum count of bag: %d\n", max_bag_cnt);
+//	printf("the maximum count of bag: %d\n", max_bag_cnt);
+
+	cnt = 0;
+	set<LL>::iterator it;
+	for (it = S.begin(); it != S.end(); it ++) {
+		LL msk = *it;
+		LL bagmsk = calc_bag_info(msk);
+		assert(__builtin_popcountll(bagmsk) == calc_bag_count(msk));
+		if (max_bag_cnt == __builtin_popcountll(bagmsk)) cnt ++;
+	}
+	fprintf(stderr, "the total number of subgroup that have maximum size: %d\n", cnt);
+	printf("Highest %d-teams: %d(%d/%d=%d%%)\n", n, cnt, max_bag_cnt, n * 3, 100 * max_bag_cnt / (n * 3));
+
+	for (it = S.begin(); it != S.end(); it ++) {
+		LL msk = *it;
+		LL bagmsk = calc_bag_info(msk);
+		assert(__builtin_popcountll(bagmsk) == calc_bag_count(msk));
+		if (max_bag_cnt == __builtin_popcountll(bagmsk)) {
+			bool flg = false;
+			for (int i = 0; i < M; i ++) if (msk & bitll(i)){
+				if (flg) printf("/");
+				flg = true;
+				printf("%s", cookie_type[i].c_str());
+			}
+			printf("\n");
+			cnt ++;
+		}
+	}
 }
 
